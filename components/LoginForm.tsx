@@ -44,9 +44,10 @@ export default function LoginForm({
 
       onSuccess?.(); // close modal
       router.push("/profile");
-    } catch (err: any) {
-      const msg =
-        err?.response?.data?.message || "Login failed. Please try again.";
+    } catch (err) {
+      const msg = axios.isAxiosError(err)
+        ? err.response?.data?.message || "Login failed. Please try again."
+        : "Login failed. Please try again.";
       setErrorMsg(msg);
       toast.error(msg);
     } finally {

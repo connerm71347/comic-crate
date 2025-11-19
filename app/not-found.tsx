@@ -1,6 +1,7 @@
 // app/not-found.tsx
 "use client"; // 👈 ADD THIS
 
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import styles from "./NotFound.module.css";
 
@@ -10,9 +11,12 @@ export default function NotFound() {
   return (
     <div className={styles.notFoundContainer}>
       <div className={styles.imageSection}>
-        <img
+        <Image
           src="https://i.pinimg.com/736x/69/2d/ec/692dec6b43ca010ea23fcf297e1120ec.jpg"
           alt="funny 404"
+          width={400}
+          height={400}
+          unoptimized
         />
       </div>
 

@@ -1,5 +1,5 @@
 "use client";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import ComicCard from "@/components/ComicCard";
 import Loader from "@/components/Loader";
@@ -17,7 +17,6 @@ type Result = {
 
 export default function SearchPage() {
   const sp = useSearchParams();
-  const router = useRouter();
   const q = (sp.get("q") ?? "").trim();
   const page = Number(sp.get("page") ?? "1") || 1;
 

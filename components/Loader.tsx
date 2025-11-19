@@ -16,6 +16,7 @@ const Loader = () => {
 
   useEffect(() => {
     const randomIndex = Math.floor(Math.random() * funMessages.length);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMessage(funMessages[randomIndex]);
   }, []);
 

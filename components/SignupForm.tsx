@@ -53,8 +53,10 @@ export default function SignupForm({
       // 4) Close modal + go to profile
       onSuccess?.();
       router.push("/profile");
-    } catch (err: any) {
-      const serverMessage = err?.response?.data?.message;
+    } catch (err) {
+      const serverMessage = axios.isAxiosError(err)
+        ? err.response?.data?.message
+        : undefined;
       if (serverMessage === "User already exists") {
         setError("Looks like that email is already registered. Please log in.");
       } else if (serverMessage === "Username already taken") {

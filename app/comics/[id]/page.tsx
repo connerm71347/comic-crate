@@ -53,7 +53,6 @@ export default function ComicDetailPage() {
     readLater: false,
     alreadyRead: false,
   });
-  const [checkingShelves, setCheckingShelves] = useState(false);
 
   //  comments state
   const [comments, setComments] = useState<Comment[]>([]);
@@ -104,8 +103,9 @@ export default function ComicDetailPage() {
             description: v.description,
           });
         }
-      } catch (e: any) {
-        setError(e?.message || "Failed to load comic.");
+      } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : "Failed to load comic.";
+        setError(message);
         setComic(null);
       } finally {
         setLoading(false);
@@ -130,11 +130,13 @@ export default function ComicDetailPage() {
 
     const vid = String(comic.id);
 
-    const inFav = user.favorites?.some((c: any) => c.volumeId === vid);
-    const inReadLater = user.readLater?.some((c: any) => c.volumeId === vid);
-    const inAlreadyRead = user.alreadyRead?.some(
-      (c: any) => c.volumeId === vid
-    );
+    const favorites = user.favorites ?? [];
+    const readLater = user.readLater ?? [];
+    const alreadyRead = user.alreadyRead ?? [];
+
+    const inFav = favorites.some((entry) => entry.volumeId === vid);
+    const inReadLater = readLater.some((entry) => entry.volumeId === vid);
+    const inAlreadyRead = alreadyRead.some((entry) => entry.volumeId === vid);
 
     setShelves({
       favorites: !!inFav,
@@ -216,14 +218,13 @@ export default function ComicDetailPage() {
         ...prev,
         [shelf]: !prev[shelf],
       }));
-    } catch (err: any) {
-      const status = err?.response?.status;
-      const msg =
-        status === 401
-          ? "Please log in to manage your shelves."
-          : err?.response?.data?.message || "Could not update your shelf.";
-      toast.error(msg);
+    } catch (err) {
       console.error("toggleShelf error:", err);
+      const status = axios.isAxiosError(err) ? err.response?.status : undefined;
+      const message = axios.isAxiosError(err)
+        ? err.response?.data?.message || "Could not update your shelf."
+        : "Could not update your shelf.";
+      toast.error(status === 401 ? "Please log in to manage your shelves." : message);
     }
   }
 
@@ -246,10 +247,12 @@ export default function ComicDetailPage() {
       // add at top
       setComments((prev) => [created, ...prev]);
       setNewComment("");
-    } catch (err: any) {
+    } catch (err) {
       console.error("Post comment error:", err);
-      const msg = err?.response?.data?.message || "Could not post comment.";
-      toast.error(msg);
+      const message = axios.isAxiosError(err)
+        ? err.response?.data?.message || "Could not post comment."
+        : "Could not post comment.";
+      toast.error(message);
     } finally {
       setPostingComment(false);
     }
@@ -309,10 +312,12 @@ export default function ComicDetailPage() {
       // remove it from local state
       setComments((prev) => prev.filter((c) => c._id !== commentId));
       toast.success("Comment deleted.");
-    } catch (err: any) {
+    } catch (err) {
       console.error("Delete comment error:", err);
-      const msg = err?.response?.data?.message || "Could not delete comment.";
-      toast.error(msg);
+      const message = axios.isAxiosError(err)
+        ? err.response?.data?.message || "Could not delete comment."
+        : "Could not delete comment.";
+      toast.error(message);
     }
   }
 
@@ -331,7 +336,6 @@ export default function ComicDetailPage() {
           <button
             type="button"
             className={styles.shelfButton}
-            disabled={checkingShelves}
             onClick={() =>
               user ? toggleShelf("favorites") : setShowAuthModal(true)
             }
@@ -345,7 +349,6 @@ export default function ComicDetailPage() {
           <button
             type="button"
             className={styles.shelfButton}
-            disabled={checkingShelves}
             onClick={() =>
               user ? toggleShelf("readLater") : setShowAuthModal(true)
             }
@@ -357,7 +360,6 @@ export default function ComicDetailPage() {
           <button
             type="button"
             className={styles.shelfButton}
-            disabled={checkingShelves}
             onClick={() =>
               user ? toggleShelf("alreadyRead") : setShowAuthModal(true)
             }

@@ -10,13 +10,22 @@ import {
 } from "react";
 import axios from "axios";
 
-type User = {
-  alreadyRead: never[];
-  readLater: never[];
-  favorites: never[];
-  favoriteComic: string;
-  favoriteHero: string;
-  bio: string;
+export type ShelfEntry = {
+  volumeId: string;
+  title?: string;
+  coverUrl?: string;
+  publisher?: string;
+  year?: string;
+  addedAt?: string;
+};
+
+export type AuthUser = {
+  alreadyRead: ShelfEntry[];
+  readLater: ShelfEntry[];
+  favorites: ShelfEntry[];
+  favoriteComic?: string;
+  favoriteHero?: string;
+  bio?: string;
   avatarKey?: string;
   _id: string;
   username: string;
@@ -24,10 +33,10 @@ type User = {
 } | null;
 
 type AuthContextType = {
-  user: User;
+  user: AuthUser;
   loading: boolean;
   refreshUser: () => Promise<void>;
-  setUser: (u: User) => void;
+  setUser: (u: AuthUser) => void;
 };
 
 export const AuthContext = createContext<AuthContextType | undefined>(
@@ -35,7 +44,7 @@ export const AuthContext = createContext<AuthContextType | undefined>(
 );
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User>(null);
+  const [user, setUser] = useState<AuthUser>(null);
   const [loading, setLoading] = useState(true);
 
   async function refreshUser() {

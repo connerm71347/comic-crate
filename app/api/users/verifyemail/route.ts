@@ -28,9 +28,10 @@ export async function POST(request: NextRequest) {
       message: "Email verified successfully✅📩",
       success: true,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : "Failed";
     return NextResponse.json(
-      { message: "Failed to verify email", error: error.message },
+      { message: "Failed to verify email", error: message },
       { status: 500 }
     );
   }

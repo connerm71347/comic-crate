@@ -20,12 +20,6 @@ export default function ComicCard({
   comic: Comic;
   fullDetail?: boolean;
 }) {
-  // example: a local click handler lives HERE (not passed from parent)
-  function handleAdd() {
-    // call your API to save favorite, etc.
-    console.log("Add to Collection", comic.id);
-  }
-
   // ... render as you had it ...
   return fullDetail ? (
     <div className={styles.comicDetailContainer}>

@@ -26,7 +26,20 @@ export async function GET(req: NextRequest) {
       "id,name,deck,description,start_year,publisher,image,site_detail_url",
   });
 
-  const data = await cvFetch<any>(url);
+  const data = await cvFetch<{
+    status_code: number;
+    error?: string;
+    results?: Array<{
+      id: number;
+      name: string;
+      deck?: string;
+      description?: string;
+      start_year?: string;
+      publisher?: { name?: string };
+      image?: { small_url?: string; medium_url?: string; super_url?: string };
+      site_detail_url?: string;
+    }>;
+  }>(url);
 
   if (data.status_code !== 1 || !data.results) {
     return NextResponse.json(
@@ -35,7 +48,7 @@ export async function GET(req: NextRequest) {
     );
   }
 
-  const results = data.results.map((r: any) => ({
+  const results = data.results.map((r) => ({
     id: r.id,
     title: r.name,
     description: stripHtml(r.deck || r.description),

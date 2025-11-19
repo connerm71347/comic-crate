@@ -49,10 +49,8 @@ export async function GET(
       url: r.site_detail_url || "",
     };
     return NextResponse.json({ result });
-  } catch (err: any) {
-    return NextResponse.json(
-      { error: String(err?.message || err) },
-      { status: 500 }
-    );
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : "Failed";
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

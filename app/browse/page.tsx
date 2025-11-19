@@ -1,5 +1,4 @@
 // app/browse/page.tsx
-import Link from "next/link";
 import ComicCard from "@/components/ComicCard";
 import { cvFetch, cvUrl } from "@/db/comicvine";
 import Pagination from "@/components/Pagination";
@@ -83,7 +82,7 @@ export default async function BrowsePage({
       <header style={{ marginBottom: "1.5rem" }}>
         <h1>Browse Comics</h1>
         <p>
-          Showing volumes for <strong>"{q}"</strong> — page {page}
+          Showing volumes for <strong>&quot;{q}&quot;</strong> — page {page}
         </p>
       </header>
 

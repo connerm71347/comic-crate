@@ -9,8 +9,9 @@ export default function SearchBar() {
   const [query, setQuery] = useState("");
 
   useEffect(() => {
-    // this keeps the search bar synced with the URL
-    setQuery(sp.get("q") ?? "");
+    const current = sp.get("q") ?? "";
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setQuery((prev) => (prev === current ? prev : current));
   }, [sp]);
 
   function onSubmit(e: React.FormEvent) {

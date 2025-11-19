@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -13,8 +13,7 @@ export default function LoginPage() {
     email: "",
     password: "",
   });
-  const [butttonDisabled, setButtonDisabled] = React.useState(false);
-  useState(false);
+  const [buttonDisabled, setButtonDisabled] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
 
   const onLogin = async () => {
@@ -26,7 +25,10 @@ export default function LoginPage() {
       router.push("/profile");
     } catch (error) {
       console.log("Login error", error);
-      toast.error("Login failed. Please try again.");
+      const message = axios.isAxiosError(error)
+        ? error.response?.data?.message || "Login failed. Please try again."
+        : "Login failed. Please try again.";
+      toast.error(message);
     } finally {
       setLoading(false);
     }
@@ -66,11 +68,15 @@ export default function LoginPage() {
         onChange={(e) => setUser({ ...user, password: e.target.value })}
         placeholder="Password"
       />
-      <button className={styles.loginButton} onClick={onLogin}>
-        Login
+      <button
+        className={styles.loginButton}
+        onClick={onLogin}
+        disabled={buttonDisabled}
+      >
+        {buttonDisabled ? "Fill all fields" : "Login"}
       </button>
       <Link href="/signup" className={styles.signupLink}>
-        Don't have an account? Sign Up
+        Don&apos;t have an account? Sign Up
       </Link>
     </div>
   );

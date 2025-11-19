@@ -3,7 +3,6 @@ import { getDataFromToken } from "@/helpers/getDataFromToken";
 import { NextRequest, NextResponse } from "next/server";
 import User from "@/models/userModel";
 import { connectToDB } from "@/db/dbConfig";
-import { get } from "http";
 
 connectToDB();
 
@@ -15,7 +14,8 @@ export async function GET(request: NextRequest) {
       message: "User fetched successfully",
       data: user,
     });
-  } catch (error: any) {
-    return NextResponse.json({ message: error.message }, { status: 400 });
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : "Unknown error";
+    return NextResponse.json({ message }, { status: 400 });
   }
 }

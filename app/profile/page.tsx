@@ -5,20 +5,12 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 
-import { useAuth } from "@/contexts/AuthContext";
+import { ShelfEntry, useAuth } from "@/contexts/AuthContext";
 import ComicCard from "@/components/ComicCard";
 import Loader from "@/components/Loader";
 import styles from "./ProfilePage.module.css";
 
 type ShelfKey = "favorites" | "readLater" | "alreadyRead";
-
-type ShelfItem = {
-  volumeId: string;
-  title?: string;
-  coverUrl?: string;
-  publisher?: string;
-  year?: string;
-};
 
 // avatar catalog - in the futrue, could use real images from /public or a CDN
 const AVATARS = [
@@ -63,9 +55,12 @@ export default function ProfilePage() {
       });
       toast.success("Profile updated!");
       await refreshUser(); // pull fresh data into context + header
-    } catch (err: any) {
+    } catch (err) {
       console.error("Profile update error:", err);
-      const msg = err?.response?.data?.message || "Could not update profile.";
+      const msg =
+        axios.isAxiosError(err) && err.response?.data?.message
+          ? err.response.data.message
+          : "Could not update profile.";
       toast.error(msg);
     } finally {
       setSaving(false);
@@ -90,10 +85,10 @@ export default function ProfilePage() {
   }
 
   // shelves from user (make sure your /api/users/me returns these arrays)
-  const shelves = {
-    favorites: (user.favorites ?? []) as ShelfItem[],
-    readLater: (user.readLater ?? []) as ShelfItem[],
-    alreadyRead: (user.alreadyRead ?? []) as ShelfItem[],
+  const shelves: Record<ShelfKey, ShelfEntry[]> = {
+    favorites: user.favorites ?? [],
+    readLater: user.readLater ?? [],
+    alreadyRead: user.alreadyRead ?? [],
   };
 
   const activeList = shelves[activeShelf];

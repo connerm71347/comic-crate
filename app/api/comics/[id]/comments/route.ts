@@ -29,7 +29,7 @@ export async function GET(
       .lean();
 
     return NextResponse.json({ data: comments });
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error("GET /api/comics/[id]/comments error:", err);
     return NextResponse.json(
       { message: "Failed to load comments" },
@@ -89,7 +89,7 @@ export async function POST(
     });
 
     return NextResponse.json({ data: comment }, { status: 201 });
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error("POST /api/comics/[id]/comments error:", err);
     return NextResponse.json(
       { message: "Failed to post comment" },

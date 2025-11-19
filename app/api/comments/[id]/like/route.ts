@@ -47,12 +47,12 @@ export async function POST(
     }
 
     const alreadyLiked = comment.likes.some(
-      (u: any) => String(u) === String(userId)
+      (likeId) => String(likeId) === String(userId)
     );
 
     if (alreadyLiked) {
       comment.likes = comment.likes.filter(
-        (u: any) => String(u) !== String(userId)
+        (likeId) => String(likeId) !== String(userId)
       );
     } else {
       comment.likes.push(userId);
@@ -61,7 +61,7 @@ export async function POST(
     await comment.save();
 
     return NextResponse.json({ data: comment });
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error("POST /api/comments/[id]/like error:", err);
     return NextResponse.json(
       { message: "Failed to toggle like" },

@@ -58,7 +58,7 @@ export async function DELETE(
     await Comment.findByIdAndDelete(commentId);
 
     return NextResponse.json({ success: true });
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error("DELETE /api/comments/[id] error:", err);
     return NextResponse.json(
       { message: "Failed to delete comment" },

@@ -19,7 +19,7 @@ export async function GET(req: NextRequest) {
     }
 
     return NextResponse.json({ data: user });
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error("GET /api/users/profile error:", err);
     return NextResponse.json(
       { message: "Failed to load profile" },
@@ -49,7 +49,7 @@ export async function PATCH(req: NextRequest) {
     } = body || {};
 
     // Build an update object with only provided fields
-    const update: Record<string, any> = {};
+    const update: Record<string, string> = {};
     if (typeof bio === "string") update.bio = bio;
     if (typeof favoriteHero === "string") update.favoriteHero = favoriteHero;
     if (typeof favoriteComic === "string") update.favoriteComic = favoriteComic;
@@ -72,7 +72,7 @@ export async function PATCH(req: NextRequest) {
     }
 
     return NextResponse.json({ message: "Profile updated", data: user });
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error("PATCH /api/users/profile error:", err);
     return NextResponse.json(
       { message: "Failed to update profile" },

@@ -14,6 +14,7 @@ export default function FunFactsSection() {
   useEffect(() => {
     if (comicFunFacts.length > 1) {
       const rand = Math.floor(Math.random() * comicFunFacts.length);
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setIndex(rand);
     }
   }, []);
