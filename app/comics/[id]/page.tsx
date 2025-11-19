@@ -47,7 +47,7 @@ export default function ComicDetailPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // 🧺 shelf state (which lists this comic is in)
+  // shelf state (which lists this comic is in)
   const [shelves, setShelves] = useState<ShelfState>({
     favorites: false,
     readLater: false,
@@ -55,14 +55,14 @@ export default function ComicDetailPage() {
   });
   const [checkingShelves, setCheckingShelves] = useState(false);
 
-  // 💬 comments state
+  //  comments state
   const [comments, setComments] = useState<Comment[]>([]);
   const [commentsLoading, setCommentsLoading] = useState(true);
   const [newComment, setNewComment] = useState("");
   const [postingComment, setPostingComment] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
 
-  // 🔁 1. Load comic (mock first, then ComicVine)
+  // 1. Load comic (mock first, then ComicVine)
   useEffect(() => {
     if (!id) return;
 
@@ -115,7 +115,7 @@ export default function ComicDetailPage() {
     load();
   }, [id]);
 
-  // 🔁 2. Derive shelf membership from the auth context user
+  // 2. Derive shelf membership from the auth context user
   useEffect(() => {
     if (!comic) return;
 
@@ -143,7 +143,7 @@ export default function ComicDetailPage() {
     });
   }, [comic, user]);
 
-  // 🔁 3. Load comments for this comic
+  //  3. Load comments for this comic
   useEffect(() => {
     if (!id) return;
 
@@ -174,7 +174,6 @@ export default function ComicDetailPage() {
     };
   }
 
-  // ⭐📚✅ TOGGLE helper: add if not present, remove if present
   async function toggleShelf(shelf: ShelfKey) {
     if (!comic) return;
 
@@ -183,7 +182,6 @@ export default function ComicDetailPage() {
 
     try {
       if (isOnShelf) {
-        // already there → REMOVE
         await axios.delete("/api/users/shelves", {
           data: { shelf, volumeId },
         });
@@ -196,7 +194,6 @@ export default function ComicDetailPage() {
             : "Removed from Already Read"
         );
       } else {
-        // not there yet → ADD
         await axios.post("/api/users/shelves", {
           shelf,
           comic: buildShelfPayload(comic),
@@ -230,7 +227,7 @@ export default function ComicDetailPage() {
     }
   }
 
-  // ➕ Post a new comment
+  // Post a new comment
   async function handlePostComment() {
     if (!comic || !id) return;
     if (!user) {
@@ -258,7 +255,7 @@ export default function ComicDetailPage() {
     }
   }
 
-  // 👍 Toggle like for a comment
+  // Toggle like for a comment
   async function toggleLike(commentId: string) {
     if (!user) {
       toast.error("Please log in to like comments.");
@@ -297,7 +294,7 @@ export default function ComicDetailPage() {
     }
   }
 
-  // 🗑 Delete a comment (TOP-LEVEL function, not nested)
+  // Delete a comment (TOP-LEVEL function, not nested)
   async function handleDeleteComment(commentId: string) {
     if (!user) {
       toast.error("Please log in to delete comments.");
@@ -329,127 +326,129 @@ export default function ComicDetailPage() {
       <main className={styles.detailPage}>
         <ComicCard comic={comic} fullDetail />
 
-      {/* 🧺 Shelf actions row (toggles) */}
-      <div className={styles.actionsRow}>
-        {/* Favorites */}
-        <button
-          type="button"
-          className={styles.shelfButton}
-          disabled={checkingShelves}
-          onClick={() =>
-            user ? toggleShelf("favorites") : setShowAuthModal(true)
-          }
-        >
-          {shelves.favorites ? "★ Remove from Favorites" : "★ Add to Favorites"}
-        </button>
+        <div className={styles.actionsRow}>
+          {/* Favorites */}
+          <button
+            type="button"
+            className={styles.shelfButton}
+            disabled={checkingShelves}
+            onClick={() =>
+              user ? toggleShelf("favorites") : setShowAuthModal(true)
+            }
+          >
+            {shelves.favorites
+              ? "★ Remove from Favorites"
+              : "★ Add to Favorites"}
+          </button>
 
-        {/* Read Later */}
-        <button
-          type="button"
-          className={styles.shelfButton}
-          disabled={checkingShelves}
-          onClick={() =>
-            user ? toggleShelf("readLater") : setShowAuthModal(true)
-          }
-        >
-          {shelves.readLater ? "📚 Remove from Read Later" : "📚 Read Later"}
-        </button>
+          {/* Read Later */}
+          <button
+            type="button"
+            className={styles.shelfButton}
+            disabled={checkingShelves}
+            onClick={() =>
+              user ? toggleShelf("readLater") : setShowAuthModal(true)
+            }
+          >
+            {shelves.readLater ? "📚 Remove from Read Later" : "📚 Read Later"}
+          </button>
 
-        {/* Already Read */}
-        <button
-          type="button"
-          className={styles.shelfButton}
-          disabled={checkingShelves}
-          onClick={() =>
-            user ? toggleShelf("alreadyRead") : setShowAuthModal(true)
-          }
-        >
-          {shelves.alreadyRead
-            ? "✅ Remove from Already Read"
-            : "✅ Mark as Read"}
-        </button>
-      </div>
-
-      {/* 💬 Comments */}
-      <section className={styles.commentsSection}>
-        <div className={styles.commentsHeader}>
-          <h2>Comments</h2>
-          {commentsLoading && (
-            <span className={styles.smallText}>Loading…</span>
-          )}
+          {/* Already Read */}
+          <button
+            type="button"
+            className={styles.shelfButton}
+            disabled={checkingShelves}
+            onClick={() =>
+              user ? toggleShelf("alreadyRead") : setShowAuthModal(true)
+            }
+          >
+            {shelves.alreadyRead
+              ? "✅ Remove from Already Read"
+              : "✅ Mark as Read"}
+          </button>
         </div>
 
-        {/* New comment form */}
-        {user ? (
-          <div className={styles.commentForm}>
-            <textarea
-              className={styles.commentTextarea}
-              value={newComment}
-              onChange={(e) => setNewComment(e.target.value)}
-              placeholder="Share your thoughts about this comic..."
-              rows={3}
-            />
-            <button
-              type="button"
-              className={styles.commentSubmit}
-              disabled={postingComment || !newComment.trim()}
-              onClick={handlePostComment}
-            >
-              {postingComment ? "Posting..." : "Post Comment"}
-            </button>
+        {/*  Comments */}
+        <section className={styles.commentsSection}>
+          <div className={styles.commentsHeader}>
+            <h2>Comments</h2>
+            {commentsLoading && (
+              <span className={styles.smallText}>Loading…</span>
+            )}
           </div>
-        ) : (
-          <p className={styles.loginHint}>
-            Log in to leave a comment and like others.
-          </p>
-        )}
 
-        {/* Comment list */}
-        {comments.length === 0 && !commentsLoading ? (
-          <p className={styles.noComments}>No comments yet. Be the first!</p>
-        ) : (
-          <ul className={styles.commentList}>
-            {comments.map((c) => {
-              const likedByMe = user ? c.likes.includes(user._id) : false;
-              const likesCount = c.likes.length;
+          {/* New comment form */}
+          {user ? (
+            <div className={styles.commentForm}>
+              <textarea
+                className={styles.commentTextarea}
+                value={newComment}
+                onChange={(e) => setNewComment(e.target.value)}
+                placeholder="Share your thoughts about this comic..."
+                rows={3}
+              />
+              <button
+                type="button"
+                className={styles.commentSubmit}
+                disabled={postingComment || !newComment.trim()}
+                onClick={handlePostComment}
+              >
+                {postingComment ? "Posting..." : "Post Comment"}
+              </button>
+            </div>
+          ) : (
+            <p className={styles.loginHint}>
+              Log in to leave a comment and like others.
+            </p>
+          )}
 
-              // ✅ can delete if you’re the author (by id) or same username
-              const canDelete =
-                !!user && (c.user === user._id || c.username === user.username);
+          {/* Comment list */}
+          {comments.length === 0 && !commentsLoading ? (
+            <p className={styles.noComments}>No comments yet. Be the first!</p>
+          ) : (
+            <ul className={styles.commentList}>
+              {comments.map((c) => {
+                const likedByMe = user ? c.likes.includes(user._id) : false;
+                const likesCount = c.likes.length;
 
-              return (
-                <li key={c._id} className={styles.commentItem}>
-                  <div className={styles.commentHeaderRow}>
-                    <span className={styles.commentAuthor}>{c.username}</span>
+                // can delete if you’re the author (by id) or same username
+                const canDelete =
+                  !!user &&
+                  (c.user === user._id || c.username === user.username);
 
-                    <div className={styles.commentActions}>
-                      <button
-                        type="button"
-                        className={styles.likeButton}
-                        onClick={() => toggleLike(c._id)}
-                      >
-                        {likedByMe ? "❤️‍🔥" : "🤍"} {likesCount || ""}
-                      </button>
+                return (
+                  <li key={c._id} className={styles.commentItem}>
+                    <div className={styles.commentHeaderRow}>
+                      <span className={styles.commentAuthor}>{c.username}</span>
 
-                      {canDelete && (
+                      <div className={styles.commentActions}>
                         <button
                           type="button"
-                          className={styles.deleteButton}
-                          onClick={() => handleDeleteComment(c._id)}
+                          className={styles.likeButton}
+                          onClick={() => toggleLike(c._id)}
                         >
-                          🗑
+                          {likedByMe ? "❤️‍🔥" : "🤍"} {likesCount || ""}
                         </button>
-                      )}
-                    </div>
-                  </div>
 
-                  <p className={styles.commentText}>{c.text}</p>
-                </li>
-              );
-            })}
-          </ul>
-        )}
-      </section>
+                        {canDelete && (
+                          <button
+                            type="button"
+                            className={styles.deleteButton}
+                            onClick={() => handleDeleteComment(c._id)}
+                          >
+                            🗑
+                          </button>
+                        )}
+                      </div>
+                    </div>
+
+                    <p className={styles.commentText}>{c.text}</p>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+        </section>
       </main>
       <AuthModal open={showAuthModal} onClose={() => setShowAuthModal(false)} />
     </>
