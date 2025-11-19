@@ -1,0 +1,64 @@
+/*
+ * Responsive polish:
+ * - page padding + hero spacing use clamp() so copy doesn't feel cramped on phones.
+ * - CTA button stretches on small screens for better tap targets.
+ * - featured grid gap adapts to viewport width.
+ */
+
+.homeContainer {
+  padding: clamp(1rem, 4vw, 2.5rem);
+}
+
+.hero {
+  text-align: center;
+  margin-bottom: clamp(1.5rem, 5vw, 2.5rem);
+}
+
+.hero h1 {
+  font-family: var(--font-heading);
+  font-size: clamp(2.2rem, 6vw, 3.5rem);
+  margin-bottom: 0.5rem;
+}
+
+.hero p {
+  max-width: 600px;
+  margin: 0 auto clamp(1rem, 3vw, 1.75rem) auto;
+  line-height: 1.5;
+}
+
+.ctaButton {
+  padding: clamp(0.5rem, 2vw, 0.75rem) clamp(1rem, 4vw, 1.5rem);
+  background-color: var(--color-red);
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: 600;
+  display: inline-flex;
+  justify-content: center;
+  min-width: 200px;
+}
+
+.ctaButton:hover {
+  background-color: var(--color-yellow);
+  color: var(--color-dark);
+}
+
+.featured {
+  margin-top: clamp(1.5rem, 4vw, 2.5rem);
+}
+
+.featured h2 {
+  margin-bottom: clamp(0.75rem, 3vw, 1.25rem);
+}
+
+.featuredGrid {
+  display: grid;
+  gap: clamp(0.75rem, 3vw, 1.5rem);
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+@media (max-width: 480px) {
+  .ctaButton {
+    width: 100%;
+  }
+}

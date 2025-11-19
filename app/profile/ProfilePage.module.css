@@ -1,0 +1,288 @@
+/*
+ * Responsive polish:
+ * - padding/avatar/tab spacing now scale with clamp() so phones aren't crowded.
+ * - tabs + grid wrap sooner to avoid overflow on narrow devices.
+ * - added small-screen media queries that tighten spacing without changing desktop look.
+ */
+
+.profilePage {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: clamp(1.5rem, 6vw, 2.5rem) clamp(1rem, 4vw, 1.5rem)
+    clamp(2rem, 6vw, 3rem);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.75rem, 5vw, 2.5rem);
+}
+
+.topSection {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .topSection {
+    flex-direction: row;
+  }
+}
+
+.identityCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: clamp(1.25rem, 4vw, 1.5rem);
+  border-radius: 18px;
+  background: linear-gradient(
+    145deg,
+    rgba(255, 215, 99, 0.15),
+    rgba(255, 0, 0, 0.08)
+  );
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
+
+.identityCard {
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .identityCard {
+    width: 32%;
+    align-items: flex-start;
+  }
+}
+
+.avatar {
+  width: clamp(72px, 18vw, 96px);
+  height: clamp(72px, 18vw, 96px);
+  border-radius: 50%;
+  background: #facc15;
+  color: #0f0f0f;
+  font-size: clamp(2rem, 5vw, 2.5rem);
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 4px solid rgba(255, 99, 71, 0.6);
+}
+
+.identityText h1 {
+  margin: 0;
+  font-size: clamp(1.5rem, 4vw, 1.75rem);
+  font-weight: 700;
+}
+
+.identityText p {
+  margin: 0.1rem 0 0;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.95rem;
+}
+
+.avatarOptions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  width: 100%;
+}
+
+.avatarChip {
+  flex: 1 1 calc(50% - 0.5rem);
+  min-width: 120px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(0, 0, 0, 0.2);
+  color: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.35rem 0.65rem;
+  cursor: pointer;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.avatarChip span {
+  font-size: 1.4rem;
+}
+
+.avatarChip small {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.avatarChipActive {
+  border-color: #facc15;
+  background: rgba(250, 204, 21, 0.15);
+  transform: translateY(-1px);
+}
+
+.formCard {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: clamp(1.25rem, 4vw, 1.5rem);
+  border-radius: 18px;
+  background: rgba(15, 15, 15, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.fieldRow {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+@media (min-width: 600px) {
+  .fieldRow {
+    flex-direction: row;
+  }
+}
+
+.label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.input,
+.textarea {
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.05);
+  color: #f7fafc;
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+
+.input:focus,
+.textarea:focus {
+  outline: none;
+  border-color: #facc15;
+  box-shadow: 0 0 0 2px rgba(250, 204, 21, 0.25);
+}
+
+.saveButton {
+  margin-top: 0.5rem;
+  align-self: flex-start;
+  padding: 0.75rem 1.75rem;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  background: linear-gradient(90deg, #facc15, #f97316);
+  color: #111;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.saveButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.saveButton:not(:disabled):hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 20px rgba(249, 115, 22, 0.3);
+}
+
+.shelvesSection {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.shelvesHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.tabs {
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 0.25rem;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(6px);
+  gap: 0.4rem;
+}
+
+.tabButton {
+  border: none;
+  border-radius: 999px;
+  padding: 0.5rem 1.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.8);
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+  min-width: 120px;
+}
+
+.tabButtonActive {
+  background: linear-gradient(120deg, #facc15, #f97316);
+  color: #111;
+  box-shadow: 0 12px 20px rgba(249, 115, 22, 0.25);
+}
+
+.emptyState {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.cardGrid {
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+}
+
+@media (max-width: 600px) {
+  .profilePage {
+    padding-bottom: 2rem;
+  }
+
+  .tabs {
+    border-radius: 24px;
+  }
+
+  .formCard {
+    gap: 0.75rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .tabs {
+    width: 100%;
+  }
+
+  .tabButton {
+    width: 100%;
+  }
+
+  .cardGrid {
+    grid-template-columns: 1fr;
+  }
+}

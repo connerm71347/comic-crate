@@ -1,0 +1,132 @@
+/*
+ * Responsive polish:
+ * - cards use clamp() for spacing so they shrink nicely in small grids.
+ * - detail layout snaps to a vertical stack below tablets to prevent squish.
+ * - thumbnails and detail image now respect container width on phones.
+ */
+
+.comicCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: clamp(0.4rem, 2vw, 0.75rem);
+  border-radius: 8px;
+  padding: clamp(0.75rem, 3vw, 1rem);
+  transition: transform 0.2s;
+  width: min(100%, 260px);
+  margin: 0 auto;
+}
+
+.comicCard:hover {
+  transform: scale(1.05);
+}
+
+.cardLink {
+  color: inherit;
+  text-decoration: none;
+  display: block;
+  width: 100%;
+}
+
+/* Wrap the thumbnail to lock aspect ratio */
+.thumbWrap {
+  width: 100%;
+  max-width: 220px; /* control card width in grids */
+  aspect-ratio: 2 / 3; /* comic-ish portrait ratio */
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25);
+  margin: 0 auto;
+}
+
+.thumbImage {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover; /* no stretching */
+}
+
+/* Full detail */
+.comicDetailContainer {
+  display: flex;
+  gap: clamp(1.25rem, 4vw, 2rem);
+  margin: 2rem 0;
+  flex-wrap: wrap;
+}
+
+.detailImage {
+  flex: 0 0 320px;
+  max-width: 100%;
+}
+
+.comicImage {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  display: block;
+  border-radius: 10px;
+  object-fit: cover;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+.detailInfo {
+  min-width: 280px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.75rem, 3vw, 1.25rem);
+}
+
+.addButton {
+  padding: 0.75rem 1.25rem;
+  background: var(--color-yellow);
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  font-family: var(--font-body);
+}
+.addButton:hover {
+  background: var(--color-red);
+  color: white;
+}
+
+.commentsSection {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-text-light);
+}
+
+@media (max-width: 640px) {
+  .comicCard {
+    width: 100%;
+  }
+
+  .thumbWrap {
+    max-width: 100%;
+  }
+
+  .comicDetailContainer {
+    flex-direction: column;
+  }
+
+  .detailImage {
+    flex: none;
+    max-width: 320px;
+    width: 100%;
+  }
+
+  .detailInfo {
+    min-width: 0;
+  }
+}
+
+@media (max-width: 420px) {
+  .comicDetailContainer {
+    margin: 1.25rem 0;
+  }
+
+  .addButton {
+    width: 100%;
+  }
+}

@@ -1,0 +1,93 @@
+/*
+ * Responsive polish:
+ * - tightened vertical rhythm with clamp() padding for handhelds.
+ * - inputs/buttons stretch to full width while keeping comfy hit targets.
+ * - added small-screen font tweaks so helper text stays readable without wrapping oddly.
+ */
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.75rem, 3vw, 1rem);
+  padding: clamp(0.5rem, 3vw, 1rem) 0;
+  width: min(100%, 360px);
+}
+
+/* Input styling */
+.input {
+  padding: 0.75rem;
+  border: 2px solid var(--color-blue);
+  border-radius: 6px;
+  font-size: 1rem;
+  font-family: var(--font-body);
+  width: 100%;
+}
+
+.input:focus {
+  outline: 2px solid var(--color-yellow);
+}
+
+/* Primary button styling */
+.button {
+  padding: 0.75rem;
+  background-color: var(--color-yellow);
+  color: var(--color-dark);
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.2s ease;
+  width: 100%;
+}
+
+.button:disabled {
+  background-color: #777;
+  cursor: not-allowed;
+}
+
+.button:not(:disabled):hover {
+  background-color: var(--color-red);
+  color: white;
+}
+
+/* Login/Signup toggle text */
+.switchText {
+  margin-top: 0.75rem;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+/* The “Sign up” / “Log in” link-looking button */
+.switchLink {
+  background: none;
+  border: none;
+  padding: 0;
+  margin-left: 0.25rem;
+  color: var(--color-yellow);
+  cursor: pointer;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.switchLink:hover {
+  color: var(--color-red);
+}
+
+.error {
+  margin-top: 0.5rem;
+  color: #ff4d4f;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 420px) {
+  .input,
+  .button {
+    font-size: 0.95rem;
+    padding: 0.65rem 0.85rem;
+  }
+
+  .switchText {
+    font-size: 0.85rem;
+  }
+}

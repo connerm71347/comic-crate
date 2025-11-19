@@ -1,0 +1,58 @@
+/*
+ * Responsive polish:
+ * - dialog padding scales via clamp() and gets extra breathing room on very small screens.
+ * - backdrop keeps centered grid while ensuring content never overflows horizontally.
+ */
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: grid;
+  place-items: center;
+  z-index: 1000;
+}
+
+.dialog {
+  background: var(--color-dark);
+  color: var(--color-text-light);
+  width: min(92vw, 420px);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  padding: clamp(1rem, 4vw, 1.5rem);
+  position: relative;
+}
+
+.title {
+  margin: 0 0 0.75rem 0;
+  font-family: var(--font-heading);
+  font-size: clamp(1.4rem, 4vw, 2rem);
+  text-shadow: 1px 1px 0 black, 2px 2px 0 var(--color-yellow);
+}
+
+.close {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: transparent;
+  border: none;
+  color: inherit;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.content {
+  display: grid;
+  gap: 0.75rem;
+}
+
+@media (max-width: 420px) {
+  .dialog {
+    width: calc(100vw - 2rem);
+  }
+
+  .close {
+    top: 0.25rem;
+    right: 0.25rem;
+  }
+}

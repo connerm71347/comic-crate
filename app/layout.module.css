@@ -1,0 +1,137 @@
+/*
+ * Responsive polish:
+ * - header/main/footer spacing now use clamp() so they breathe on desktop but stay tight on phones.
+ * - nav layout wraps gracefully with stacked links + full-width search on small screens.
+ * - footer no longer fixed, preventing overlay on short mobile viewports.
+ */
+
+.rootLayout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-navy);
+  color: var(--color-text-light);
+}
+
+.rootHeader {
+  background-color: var(--color-dark);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  padding: clamp(0.75rem, 3vw, 1.25rem) clamp(1rem, 4vw, 2rem);
+}
+
+.navContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: clamp(0.75rem, 3vw, 1.5rem);
+  flex-wrap: wrap;
+}
+
+.leftSide {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.75rem, 3vw, 2rem);
+  flex-wrap: wrap;
+}
+
+.title {
+  color: var(--color-red);
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 6vw, 3.75rem);
+  text-shadow: 2px 2px 0 black, 4px 4px 0 yellow;
+  margin: 0;
+}
+
+.navLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(0.5rem, 2vw, 1.25rem);
+}
+
+.navLinks a {
+  text-decoration: none;
+  color: var(--color-text-light);
+  padding: 0.35rem 0.65rem;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  font-size: clamp(1rem, 2.5vw, 1.15rem);
+}
+
+.navLinks a:hover {
+  outline: 2px solid var(--color-yellow);
+}
+
+.navLinks a.active {
+  background-color: var(--color-yellow);
+  color: var(--color-dark);
+}
+
+.rightSide {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex: 1;
+  min-width: 220px;
+}
+
+.navButton {
+  background: transparent;
+  border: none;
+  color: var(--color-text-light);
+  padding: 0.35rem 0.65rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font: inherit;
+  font-size: clamp(1rem, 2.5vw, 1.15rem);
+  transition: outline 0.2s ease;
+}
+
+.navButton:hover {
+  outline: 2px solid var(--color-yellow);
+}
+
+.rootLayout main {
+  flex: 1;
+  width: 100%;
+  padding: clamp(1rem, 4vw, 2rem);
+  padding-bottom: clamp(3rem, 6vw, 4rem); /* breathing room before footer */
+}
+
+.rootLayout footer {
+  background-color: var(--color-dark);
+  color: var(--color-text-light);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem 0.5rem;
+  font-size: 0.9rem;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.3);
+}
+
+@media (max-width: 768px) {
+  .navContainer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .rightSide {
+    width: 100%;
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 520px) {
+  .navLinks {
+    width: 100%;
+  }
+
+  .navLinks a,
+  .navButton {
+    flex: 1 1 calc(50% - 0.5rem);
+    text-align: center;
+  }
+
+  .rightSide {
+    width: 100%;
+  }
+}

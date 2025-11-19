@@ -1,0 +1,43 @@
+/*
+ * Responsive polish:
+ * - pagination pills wrap + center on phones.
+ * - tap targets scale via clamp() spacing and min-width so they remain usable.
+ */
+
+.pagination {
+  margin-top: 2rem;
+  display: flex;
+  gap: clamp(0.5rem, 3vw, 0.75rem);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.pageButton {
+  padding: clamp(0.4rem, 2vw, 0.5rem) clamp(0.75rem, 4vw, 1rem);
+  background-color: var(--color-dark);
+  color: var(--color-text-light);
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  border: 1px solid var(--color-yellow);
+  transition: background-color 0.2s, transform 0.1s;
+  min-width: 120px;
+  text-align: center;
+}
+
+.pageButton:hover {
+  background-color: var(--color-yellow);
+  color: var(--color-dark);
+  transform: translateY(-1px);
+}
+
+.pageButtonDisabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+@media (max-width: 480px) {
+  .pageButton {
+    flex: 1 1 45%;
+  }
+}
