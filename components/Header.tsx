@@ -1,7 +1,7 @@
 // components/Header.tsx
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import axios from "axios";
@@ -83,7 +83,9 @@ export default function Header() {
 
           {/* RIGHT: search bar */}
           <div className={styles.rightSide}>
-            <SearchBar />
+            <Suspense fallback={null}>
+              <SearchBar />
+            </Suspense>
           </div>
         </nav>
       </header>
