@@ -45,10 +45,11 @@ function applyUpdate(user: any, update: any) {
   if (update.$addToSet) {
     for (const [key, value] of Object.entries(update.$addToSet)) {
       const list = user[key] as ShelfEntry[];
-      if (!list.some((entry) => entry.volumeId === value.volumeId)) {
+      const entryValue = value as ShelfEntry;
+      if (!list.some((entry) => entry.volumeId === entryValue.volumeId)) {
         list.push({
-          ...value,
-          addedAt: value.addedAt ?? new Date().toISOString(),
+          ...entryValue,
+          addedAt: entryValue.addedAt ?? new Date().toISOString(),
         });
       }
     }
