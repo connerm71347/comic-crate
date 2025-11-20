@@ -42,7 +42,11 @@ export async function POST(req: NextRequest) {
     const savedUser = await newUser.save(); // save is a mongoose method that saves the document to the database
     //send verification email
 
-    await sendEmail({ email, emailType: "VERIFY", userId: savedUser._id });
+    await sendEmail({
+      email,
+      emailType: "VERIFY",
+      userId: savedUser._id.toString(),
+    });
 
     return NextResponse.json({
       message: "User created successfully",
