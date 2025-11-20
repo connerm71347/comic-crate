@@ -47,12 +47,12 @@ export async function POST(
     }
 
     const alreadyLiked = comment.likes.some(
-      (likeId) => String(likeId) === String(userId)
+      (likeId: unknown) => String(likeId) === String(userId)
     );
 
     if (alreadyLiked) {
       comment.likes = comment.likes.filter(
-        (likeId) => String(likeId) !== String(userId)
+        (likeId: unknown) => String(likeId) !== String(userId)
       );
     } else {
       comment.likes.push(userId);
