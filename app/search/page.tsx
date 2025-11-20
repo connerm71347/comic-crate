@@ -1,6 +1,6 @@
 "use client";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import ComicCard from "@/components/ComicCard";
 import Loader from "@/components/Loader";
 import Pagination from "@/components/Pagination";
@@ -15,7 +15,7 @@ type Result = {
   url: string;
 };
 
-export default function SearchPage() {
+function SearchContent() {
   const sp = useSearchParams();
   const q = (sp.get("q") ?? "").trim();
   const page = Number(sp.get("page") ?? "1") || 1;
@@ -98,5 +98,13 @@ export default function SearchPage() {
         <p>No results for “{q}”. Try another keyword.</p>
       )}
     </div>
+  );
+}
+
+export default function SearchPage() {
+  return (
+    <Suspense fallback={<p style={{ padding: "1rem" }}>Loading search…</p>}>
+      <SearchContent />
+    </Suspense>
   );
 }
