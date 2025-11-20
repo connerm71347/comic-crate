@@ -1,19 +1,11 @@
 import { ReactNode } from "react";
-import { AuthContext } from "@/contexts/AuthContext";
-
-type User = {
-  _id?: string;
-  username?: string;
-  favorites?: any[];
-  readLater?: any[];
-  alreadyRead?: any[];
-} | null;
+import { AuthContext, AuthUser } from "@/contexts/AuthContext";
 
 type AuthValue = {
-  user: User;
+  user: AuthUser;
   loading: boolean;
   refreshUser: () => Promise<void>;
-  setUser: (u: User) => void;
+  setUser: (u: AuthUser) => void;
 };
 
 export function createAuthWrapper(
