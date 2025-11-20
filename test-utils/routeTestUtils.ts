@@ -1,5 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 
+type NextRequestInit = Omit<RequestInit, "signal"> & {
+  signal?: AbortSignal;
+};
+
 type RouteHandler<TContext = undefined> = (
   req: NextRequest,
   context: TContext
@@ -44,7 +48,7 @@ export async function callRoute<TContext = undefined>(
     }
   }
 
-  const request = new NextRequest(url.toString(), init);
+  const request = new NextRequest(url.toString(), init as NextRequestInit);
   const response = await handler(
     request,
     (context ?? (undefined as TContext)) as TContext
