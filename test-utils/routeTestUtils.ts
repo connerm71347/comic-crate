@@ -35,7 +35,7 @@ export async function callRoute<TContext = undefined>(
   const init: RequestInit = {
     method,
     headers: nextHeaders,
-  };
+  } satisfies RequestInit;
 
   if (body !== undefined && method !== "GET" && method !== "HEAD") {
     init.body = typeof body === "string" ? body : JSON.stringify(body);
